@@ -1,9 +1,9 @@
 import type { NextPage } from 'next';
+import NextLink from 'next/link';
 import Head from 'next/head';
 import { useSession, signIn, signOut } from 'next-auth/react';
 
-const Home: NextPage = () => {
-
+const AppPage: NextPage = () => {
   const { data: session } = useSession();
 
   return (
@@ -16,9 +16,9 @@ const Home: NextPage = () => {
       <main className="flex flex-col items-center justify-center flex-1 w-full px-20 text-center">
         <h1 className="text-6xl font-bold">
           Welcome to{' '}
-          <a className="text-indigo-600" href="https://nextjs.org">
-            Next.js!
-          </a>
+          <NextLink href="https://nextjs.org">
+            <a className="text-red-600">Next.js!</a>
+          </NextLink>
         </h1>
 
         <p className="mt-3 text-2xl">
@@ -29,22 +29,21 @@ const Home: NextPage = () => {
         </p>
 
         <div>
-          {
-            session ?
-              <div>
-                Signed in as {session.user.email} <br />
-                <button onClick={() => signOut()}>Sign out</button>
-              </div>
-            :
+          {session ? (
+            <div>
+              Signed in as {session.user.email} <br />
+              <button onClick={() => signOut()}>Sign out</button>
+            </div>
+          ) : (
             <div>
               Not signed in <br />
               <button onClick={() => signIn()}>Sign in</button>
             </div>
-          }
+          )}
         </div>
       </main>
     </div>
   );
-}
+};
 
-export default Home;
+export default AppPage;
