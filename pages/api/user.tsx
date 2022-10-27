@@ -12,11 +12,11 @@ interface SuccessRepsonseType {
   cellphone: string;
   teacher: boolean;
   coins: number;
-  courses: [];
-  available_hours: string;
-  available_locations: string;
-  reviews: [];
-  appointments: [];
+  courses: Array<string>;
+  available_hours: object;
+  available_locations: Array<string>;
+  reviews: Array<object>;
+  appointments: Array<object>;
 }
 
 export default async function handler(
@@ -59,13 +59,28 @@ export default async function handler(
       reviews: [],
       appointments: [],
     });
+
     const result = await db.collection('users').findOne(responses.insertedId);
     return res.status(200).json(result);
   } else if (req.method === 'GET') {
+
+    const { email } = req.body;
+
+    if(!email){
+      res.status(400).json({error: "Not found required email"});
+      return;
+    }
+
     const { db } = await connect();
-    const result = await db.collection('users').findOne("6359a8516f024cca9760779b");
-    res.status(400).json(result);
+    const result = await db.collection('users').findOne({email});
+
+    if(!result){
+      return res.status(400).json({error: "Not found this email"});
+    }
+
+    res.status(400).json({result});
+
   } else {
-    res.status(400).json({ error: 'Bad request' });
+    res.status(400).json({ error: 'Bad reqest' });
   }
 }
