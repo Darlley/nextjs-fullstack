@@ -16,7 +16,7 @@ const ProfilePage: NextPage = () => {
   return (
     <div className="flex flex-col items-center justify-center min-h-screen py-2">
       {data ? (
-        <Navbar pageName="Profile" name={data.name} email={data.email} />
+        <Navbar pageName="Profile" name={data.name} email={data.email} coins={data.coins} />
       ) : (
         <Navbar pageName="Profile" name="Navbar" />
       ) }

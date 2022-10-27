@@ -5,7 +5,7 @@ import Link from 'next/link';
 const Navbar: NextPage = (props) => {
   return (
     <div className="flex flex-col items-center justify-center w-full">
-      <h1 className="p-2 font-bold">{!props.email ? props.name : `${props.name} | ${props.email}`}</h1>
+      <h1 className="p-2 font-bold">{!props.email ? props.name : `${props.name} | ${props.email}`} <sup>{props.coins}</sup></h1>
 
       <div className="flex justify-between w-full px-8 py-2 bg-blue-500">
         <h2 className="font-bold text-white">{props.pageName}</h2>
