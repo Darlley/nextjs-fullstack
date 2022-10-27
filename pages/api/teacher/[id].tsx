@@ -1,23 +1,25 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from 'next';
-import connect from '../../utils/database';
+import connect from '../../../utils/database';
 import { ObjectId } from 'mongodb';
 
 interface ErrorResponseType {
   error: string;
 }
 interface SuccessRepsonseType {
-  _id: number;
+  _id: string;
   name: string;
   email: string;
   cellphone: string;
   teacher: boolean;
   coins: number;
   courses: Array<string>;
-  available_hours: object;
+  available_hours: Record<string, number[]>;
   available_locations: Array<string>;
-  reviews: Array<object>;
-  appointments: Array<object>;
+  reviews: Record<string, unknown>[];
+  appointments: {
+    date: string;
+  }[];
 }
 
 export default async function handler(
@@ -25,7 +27,7 @@ export default async function handler(
   res: NextApiResponse<ErrorResponseType | SuccessRepsonseType>
 ): Promise<void> {
   if (req.method === 'GET') {
-    const id = new ObjectId(req.body.id);
+    const id = new ObjectId(req.query.id as string);
 
     if (!id) {
       res.status(400).json({ error: 'Not found required id' });
@@ -41,7 +43,7 @@ export default async function handler(
       return res.status(400).json({ error: 'Not found this id' });
     }
 
-    res.status(200).json({ result });
+    res.status(200).json(result);
   } else {
     res.status(400).json({ error: 'Bad reqest' });
   }

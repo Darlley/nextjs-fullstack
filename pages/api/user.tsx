@@ -6,17 +6,19 @@ interface ErrorResponseType {
   error: string;
 }
 interface SuccessRepsonseType {
-  _id: number;
+  _id: string;
   name: string;
   email: string;
   cellphone: string;
   teacher: boolean;
   coins: number;
   courses: Array<string>;
-  available_hours: object;
+  available_hours: Record<string, number[]>;
   available_locations: Array<string>;
-  reviews: Array<object>;
-  appointments: Array<object>;
+  reviews: Record<string, unknown>[];
+  appointments: {
+    date: string;
+  }[];
 }
 
 export default async function handler(
@@ -62,24 +64,6 @@ export default async function handler(
 
     const result = await db.collection('users').findOne(responses.insertedId);
     return res.status(200).json(result);
-  } else if (req.method === 'GET') {
-
-    const { email } = req.body;
-
-    if(!email){
-      res.status(400).json({error: "Not found required email"});
-      return;
-    }
-
-    const { db } = await connect();
-    const result = await db.collection('users').findOne({email});
-
-    if(!result){
-      return res.status(400).json({error: "Not found this email"});
-    }
-
-    res.status(400).json({result});
-
   } else {
     res.status(400).json({ error: 'Bad reqest' });
   }
