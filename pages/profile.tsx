@@ -1,13 +1,25 @@
+import useSWR from 'swr';
 import type { NextPage } from 'next';
 import NextLink from 'next/link';
 import Head from 'next/head';
 import { useSession, signIn, signOut } from 'next-auth/react';
+import Navbar from '../components/nav';
 
-const AppPage: NextPage = () => {
+const fetcher = (...args) => fetch(...args).then(res => res.json())
+
+const ProfilePage: NextPage = () => {
   const { data: session } = useSession();
+
+  const { data, error } = useSWR(`/api/user/${session?.user?.email}`, fetcher);
+  console.log(data);
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen py-2">
+      {data ? (
+        <Navbar pageName="Profile" name={data.name} email={data.email} />
+      ) : (
+        <Navbar pageName="Profile" name="Navbar" />
+      ) }
       <Head>
         <title>Create Next App</title>
         <link rel="icon" href="/favicon.ico" />
@@ -46,4 +58,4 @@ const AppPage: NextPage = () => {
   );
 };
 
-export default AppPage;
+export default ProfilePage;
