@@ -1,6 +1,6 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from 'next';
-import connect from '../../utils/database';
+import connect from '../../../utils/database';
 
 interface ErrorResponseType {
   error: string;
@@ -26,7 +26,7 @@ export default async function handler(
   res: NextApiResponse<ErrorResponseType | SuccessRepsonseType>
 ): Promise<void> {
   if (req.method === 'GET') {
-    const { courses } = req.body;
+    const { courses } = req.query;
 
     if (!courses) {
       res.status(400).json({ error: 'Not found required courses' });

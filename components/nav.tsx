@@ -1,5 +1,4 @@
 import { NextPage } from 'next';
-import { SERVER_PROPS_ID } from 'next/dist/shared/lib/constants';
 import Link from 'next/link';
 
 const Navbar: NextPage = (props) => {
